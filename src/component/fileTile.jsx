@@ -1,23 +1,27 @@
 import React from 'react';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 
-const FileTile = ({ key, firstName, lastName, uploadTime, updateTime, description, url }) => {
+const FileTile = ({ id, firstName, lastName, uploadTime, updateTime, description, url }) => {
+
+    const navigate = useNavigate();
+
     const deleteFile = () => {
 
     }
     return (
-        <Row key={firstName + updateTime + key}>
-            <Col>{firstName}</Col>
-            <Col>{lastName}</Col>
-            <Col>{uploadTime}</Col>
-            <Col>{updateTime}</Col>
-            <Col>{description}</Col>
-            <Col><a href={url} download>download</a></Col>
-            <Col><Button variant="danger" onClick={deleteFile}>Update</Button></Col>
-            <Col><Button variant="danger" onClick={deleteFile}>Delete</Button></Col>
-        </Row>
+        <tr style={{ border: "1px solid" }}>
+            <td>{firstName}</td>
+            <td>{lastName}</td>
+            <td>{uploadTime}</td>
+            <td>{updateTime}</td>
+            <td>{description}</td>
+            <td><a href={url} download>download</a></td>
+            <td><Button variant="danger" onClick={() => {
+                navigate(`/files/${id}`, { state: { id, description, name: url } });
+            }}>Update</Button></td>
+            <td><Button variant="danger" onClick={deleteFile}>Delete</Button></td>
+        </tr>
     );
 }
 

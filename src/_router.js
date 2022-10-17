@@ -10,6 +10,7 @@ import Login from './pages/login';
 import Signup from './pages/signup';
 import Files from './pages/files';
 import FilesUpload from './pages/upload';
+import FilesUpdate from './pages/filesUpdate';
 
 const RouterContent = () => (
     <Router>
@@ -19,6 +20,7 @@ const RouterContent = () => (
             <Route path="/signup" element={<Signup />} />
             <Route path="/files" element={<Files />} />
             <Route path="/files/upload" element={<FilesUpload />} />
+            <Route path="/files/:id" element={<FilesUpdate />} />
             <Route path="*" element={<PageNotFound></PageNotFound>} />
         </Routes>
     </Router>
