@@ -1,13 +1,25 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const FileTile = ({ id, firstName, lastName, uploadTime, updateTime, description, url }) => {
+const FileTile = ({ id, firstName, lastName, uploadTime, updateTime, description, url, getFiles }) => {
 
     const navigate = useNavigate();
 
     const deleteFile = () => {
-
+        axios.delete(`http://localhost:8000/files/${id}`, {
+            headers: {
+                authorization: localStorage.getItem('userToken')
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                getFiles();
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
     return (
         <tr style={{ border: "1px solid" }}>

@@ -75,6 +75,7 @@ const Files = () => {
                                 updateTime={file.updateTime}
                                 description={file.description}
                                 url={file.url}
+                                getFiles={getFiles}
                             />
                         ))
                     }
