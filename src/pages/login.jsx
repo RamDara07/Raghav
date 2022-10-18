@@ -20,8 +20,8 @@ function MyForm() {
 
     const handleSubmit = (event) => {
         axios.post('http://localhost:8000/login', {
-            firstName: inputs.firstName,
-            lastName: inputs.lastName,
+            firstname: inputs.firstname,
+            lastname: inputs.lastname,
             email: inputs.email,
             password: inputs.password
         })
@@ -30,6 +30,7 @@ function MyForm() {
                     console.log(response);
                     setInputs({});
                     window.localStorage.setItem('userToken', response.data.jwtToken);
+                    window.localStorage.setItem('user', response.data.user.firstname);
                     navigate('/files');
                     setError();
                 }

@@ -4,7 +4,6 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Image from 'react-bootstrap/Image';
 import Badge from 'react-bootstrap/Badge';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import ProjectLogo from './projectLogo';
 
 const Footer = () => {

@@ -39,11 +39,12 @@ const Files = () => {
         navigate("/");
     }
 
+    const userName = localStorage.getItem('user');
     return (
         <div style={{ padding: "24px 0px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", padding: "24px 0px" }}>
                 <div>
-                    <h3>Hello, Raghav</h3>
+                    <h3>Hello, {userName}</h3>
                 </div>
                 <div>
                     <Button style={{ margin: "0px 12px" }} onClick={() => { navigate("/files/upload") }}><b>Upload</b></Button>
@@ -67,12 +68,12 @@ const Files = () => {
                     {
                         files?.map((file, i) => (
                             <FileTile
-                                key={file.firstName + file.updateTime + i}
+                                key={file.firstname + file.updateTime + i}
                                 id={file.id}
-                                firstName={file.firstName}
-                                lastName={file.lastName}
-                                uploadTime={file.uploadTime}
-                                updateTime={file.updateTime}
+                                firstname={file.firstname}
+                                lastname={file.lastname}
+                                uploadTime={file.created_at}
+                                updateTime={file.updated_at}
                                 description={file.description}
                                 url={file.url}
                                 getFiles={getFiles}

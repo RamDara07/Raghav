@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import AWS from 'aws-sdk'
@@ -6,10 +6,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
-const S3_BUCKET = 'bucket';
-const REGION = 'us-west-1';
-const ACCESS_KEY = 'accesskey';
-const SECRET_ACCESS_KEY = 'secretKey';
+const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
+const REGION = process.env.REACT_APP_REGION;
+const ACCESS_KEY = process.env.REACT_APP_ACCESS_KEY;
+const SECRET_ACCESS_KEY = process.env.REACT_APP_SECRET_ACCESS_KEY;
 
 AWS.config.update({
     accessKeyId: ACCESS_KEY,
@@ -31,6 +31,8 @@ const FilesUpload = () => {
         setInputs(values => ({ ...values, [name]: value }))
     };
 
+    console.log(process.env);
+    console.log(process.env.S3_BUCKET);
     const [progress, setProgress] = useState(0);
     const [showProgress, setShowProgress] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -40,6 +42,12 @@ const FilesUpload = () => {
         setSelectedFile(file);
         setInputs(values => ({ ...values, 'fileName': file.name, 'fileSize': file.size }))
     }
+
+    useEffect(() => {
+        if (progress === 100) {
+            uploadFileReq();
+        }
+    }, [progress]);
 
     const uploadFileReq = () => {
         axios.post('http://localhost:8000/files', {
@@ -73,7 +81,6 @@ const FilesUpload = () => {
         };
         myBucket.putObject(params, (err, data) => {
             console.log({ err }, { data });
-            uploadFileReq();
         })
             .on('httpUploadProgress', (evt) => {
                 setProgress(Math.round((evt.loaded / evt.total) * 100))
@@ -85,20 +92,18 @@ const FilesUpload = () => {
 
     return <div style={{ display: 'flex', height: '75vh', flexFlow: 'column', justifyContent: 'center', fontWeight: 'bold' }}>
         <div className="box">
-            <Form onSubmit={() => handleUpload(selectedFile)}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>File description</Form.Label>
-                    <Form.Control type="text" placeholder="description" name="description" value={inputs.description || ""} onChange={handleChange}
-                    />
-                </Form.Group>
-                <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Label>File input</Form.Label>
-                    <Form.Control type="file" onChange={handleFileInput} />
-                </Form.Group>
-                {showProgress ? (<div>File Upload Progress is {progress}%</div>)
-                    : <></>}
-            </Form>
-            <Button variant="primary" type="submit" onClick={() => handleUpload(selectedFile)}>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>File description</Form.Label>
+                <Form.Control type="text" placeholder="description" name="description" value={inputs.description || ""} onChange={handleChange}
+                />
+            </Form.Group>
+            <Form.Group controlId="formFile" className="mb-3">
+                <Form.Label>File input</Form.Label>
+                <Form.Control type="file" onChange={handleFileInput} />
+            </Form.Group>
+            {showProgress ? (<div>File Upload Progress is {progress}%</div>)
+                : <></>}
+            <Button variant="primary" onClick={() => handleUpload(selectedFile)}>
                 Submit
             </Button>
         </div>

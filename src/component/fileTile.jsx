@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const FileTile = ({ id, firstName, lastName, uploadTime, updateTime, description, url, getFiles }) => {
+const FileTile = ({ id, firstname, lastname, uploadTime, updateTime, description, url, getFiles }) => {
 
     const navigate = useNavigate();
 
@@ -23,8 +23,8 @@ const FileTile = ({ id, firstName, lastName, uploadTime, updateTime, description
     }
     return (
         <tr style={{ border: "1px solid" }}>
-            <td>{firstName}</td>
-            <td>{lastName}</td>
+            <td>{firstname}</td>
+            <td>{lastname}</td>
             <td>{uploadTime}</td>
             <td>{updateTime}</td>
             <td>{description}</td>

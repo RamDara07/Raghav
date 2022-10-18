@@ -17,8 +17,8 @@ function MyForm() {
     const handleSubmit = (event) => {
         console.log(inputs);
         axios.post('http://localhost:8000/signup', {
-            firstName: inputs.firstName,
-            lastName: inputs.lastName,
+            firstname: inputs.firstname,
+            lastname: inputs.lastname,
             email: inputs.email,
             password: inputs.password
         })
@@ -35,13 +35,13 @@ function MyForm() {
     return (
         <div style={{ display: 'flex', height: '75vh', flexFlow: 'column', justifyContent: 'center', fontWeight: 'bold' }}>
             <div className="box">
-                <Form.Group className="mb-3" controlId="formFirstName">
+                <Form.Group className="mb-3" controlId="formfirstname">
                     <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" name="firstName" placeholder="Enter first name" value={inputs.firstName || ""} onChange={handleChange} />
+                    <Form.Control type="text" name="firstname" placeholder="Enter first name" value={inputs.firstname || ""} onChange={handleChange} />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formLastName">
+                <Form.Group className="mb-3" controlId="formlastname">
                     <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text" name="lastName" placeholder="Enter last name" value={inputs.lastName || ""} onChange={handleChange} />
+                    <Form.Control type="text" name="lastname" placeholder="Enter last name" value={inputs.lastname || ""} onChange={handleChange} />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
