@@ -6,10 +6,10 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
-const S3_BUCKET = 'myprojectcmpe281';
+const S3_BUCKET = 'bucket';
 const REGION = 'us-west-1';
-const ACCESS_KEY = 'AKIAZ76T44UERXII56PP';
-const SECRET_ACCESS_KEY = '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';
+const ACCESS_KEY = 'accesskey';
+const SECRET_ACCESS_KEY = 'secretKey';
 
 AWS.config.update({
     accessKeyId: ACCESS_KEY,
