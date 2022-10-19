@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { config } from '../config';
 
 
 
@@ -20,7 +21,7 @@ const FilesUpload = () => {
     };
 
     const handleUpload = () => {
-        axios.put(`http://localhost:8000/files/${inputs.id}`, {
+        axios.put(`${config.BASE_URL}/files/${inputs.id}`, {
             fileDescription: inputs.description,
         }, {
             headers: {

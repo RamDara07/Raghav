@@ -1,8 +1,8 @@
 import './App.css';
-import Footer from './component/footer';
-import RouterContent from './_router';
+import Footer from './component/Footer';
+import RouterContent from './Router';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Header from './component/header';
+import Header from './component/Header';
 import Container from 'react-bootstrap/Container';
 
 function App() {

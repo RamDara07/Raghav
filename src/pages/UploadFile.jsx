@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import AWS from 'aws-sdk'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { config } from '../config';
 
 
 const S3_BUCKET = process.env.REACT_APP_S3_BUCKET;
@@ -30,9 +31,6 @@ const FilesUpload = () => {
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
     };
-
-    console.log(process.env);
-    console.log(process.env.S3_BUCKET);
     const [progress, setProgress] = useState(0);
     const [showProgress, setShowProgress] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -45,12 +43,12 @@ const FilesUpload = () => {
 
     useEffect(() => {
         if (progress === 100) {
-            uploadFileReq();
+            uploadFileToBE();
         }
     }, [progress]);
 
-    const uploadFileReq = () => {
-        axios.post('http://localhost:8000/files', {
+    const uploadFileToBE = () => {
+        axios.post(`${config.BASE_URL}/files`, {
             fileDescription: inputs.description,
             fileName: inputs.fileName,
             fileSize: inputs.fileSize
@@ -104,7 +102,7 @@ const FilesUpload = () => {
             {showProgress ? (<div>File Upload Progress is {progress}%</div>)
                 : <></>}
             <Button variant="primary" onClick={() => handleUpload(selectedFile)}>
-                Submit
+                Upload
             </Button>
         </div>
     </div>

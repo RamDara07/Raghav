@@ -5,3 +5,8 @@ export function isEmpty(obj) {
     }
     return true;
 }
+
+export function dateTime(obj) {
+    return new Date(obj).toDateString();
+}
+

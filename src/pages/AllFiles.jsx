@@ -1,73 +1,61 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Button, Row, Table } from 'react-bootstrap';
-import FileTile from '../component/fileTile';
+import { Button, Table } from 'react-bootstrap';
+import FileRow from '../component/FileRow';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { config } from '../config';
+import { TableHead } from '../component/TableHead';
 
 
-const Files = () => {
+const AllFiles = () => {
     const [files, setFile] = useState();
     const navigate = useNavigate();
 
-    const getFiles = () => {
-        axios.get('http://localhost:8000/files', {
+    const signout = () => {
+        window.localStorage.removeItem("userToken");
+        navigate("/");
+    }
+
+    const fetchFiles = () => {
+        axios.get(`${config.BASE_URL}/files`, {
             headers: {
                 authorization: localStorage.getItem('userToken')
             }
         })
             .then(function (response) {
-                // handle success
-                console.log(response);
                 setFile(response.data);
             })
             .catch(function (error) {
-                // handle error
+
                 console.log(error);
-            })
-            .finally(function () {
-                // always executed
             });
     };
 
     useEffect(() => {
-        getFiles();
+        fetchFiles();
     }, []);
 
-    const logout = () => {
-        window.localStorage.removeItem("userToken");
-        navigate("/");
-    }
-
-    const userName = localStorage.getItem('user');
+    const firstName = localStorage.getItem('user');
+    const admin = localStorage.getItem('admin');
     return (
         <div style={{ padding: "24px 0px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", padding: "24px 0px" }}>
                 <div>
-                    <h3>Hello, {userName}</h3>
+                    <h4>Welcome, {firstName}</h4>
+                    <p>{admin === 'true' ? 'You Can Manage files of all users' : ''} </p>
                 </div>
                 <div>
                     <Button style={{ margin: "0px 12px" }} onClick={() => { navigate("/files/upload") }}><b>Upload</b></Button>
-                    <Button onClick={logout}><b>Logout</b></Button>
+                    <Button onClick={signout}><b>SignOut</b></Button>
                 </div>
             </div>
-            <Table striped bordered hover>
-                <thead style={{ border: "1px solid", fontWeight: "bold" }}>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Upload Time</th>
-                        <th>Update Time</th>
-                        <th>Description</th>
-                        <th>Download</th>
-                        <th>Update</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
+            <Table striped bordered hover style={{ background: "antiquewhite" }}>
+                <TableHead />
                 <tbody>
                     {
                         files?.map((file, i) => (
-                            <FileTile
+                            <FileRow
                                 key={file.firstname + file.updateTime + i}
                                 id={file.id}
                                 firstname={file.firstname}
@@ -76,7 +64,7 @@ const Files = () => {
                                 updateTime={file.updated_at}
                                 description={file.description}
                                 url={file.url}
-                                getFiles={getFiles}
+                                getFiles={fetchFiles}
                             />
                         ))
                     }
@@ -86,4 +74,4 @@ const Files = () => {
     );
 };
 
-export default Files;
+export default AllFiles;

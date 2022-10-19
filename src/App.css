@@ -99,3 +99,9 @@
   font-size: 25px;
   font-weight: bold;
 }
+
+.box {
+  border-radius: 40px;
+  background-color: #ffc107;
+  padding: 10% 30%;
+}

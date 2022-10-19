@@ -1,62 +1,63 @@
 
 import { useState } from "react";
-import './login.css';
+import { Button, Form } from 'react-bootstrap';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import axios from "axios";
-import { isEmpty } from "../util";
+import { config } from "../config";
 
 function MyForm() {
     const [inputs, setInputs] = useState({});
-    const [error, setError] = useState();
 
+    const navigate = useNavigate();
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
     }
-    const navigate = useNavigate();
 
     const handleSubmit = (event) => {
-        axios.post('http://localhost:8000/login', {
+        console.log(inputs);
+        axios.post(`${config.BASE_URL}/signup`, {
             firstname: inputs.firstname,
             lastname: inputs.lastname,
             email: inputs.email,
             password: inputs.password
         })
             .then(function (response) {
-                if (response.status == 200 && !isEmpty(response.data.jwtToken)) {
-                    console.log(response);
-                    setInputs({});
-                    window.localStorage.setItem('userToken', response.data.jwtToken);
-                    window.localStorage.setItem('user', response.data.user.firstname);
-                    navigate('/files');
-                    setError();
-                }
-                setError(response.data.message);
+                console.log(response);
+                setInputs({});
+                navigate('/login');
             })
             .catch(function (error) {
                 console.log(error);
-                setError(error.response.data.message);
             });
     }
 
     return (
         <div style={{ display: 'flex', height: '75vh', flexFlow: 'column', justifyContent: 'center', fontWeight: 'bold' }}>
             <div className="box">
+                <Form.Group className="mb-3" controlId="formfirstname">
+                    <Form.Label>First Name</Form.Label>
+                    <Form.Control type="text" name="firstname" placeholder="Enter first name" value={inputs.firstname || ""} onChange={handleChange} />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formlastname">
+                    <Form.Label>Last Name</Form.Label>
+                    <Form.Control type="text" name="lastname" placeholder="Enter last name" value={inputs.lastname || ""} onChange={handleChange} />
+                </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
+                    <Form.Label>Email</Form.Label>
                     <Form.Control type="email" name="email" placeholder="Enter email" value={inputs.email || ""} onChange={handleChange} />
+                    <Form.Text className="text-muted">
+                        Your email with is safe with us.
+                    </Form.Text>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" placeholder="Password" name="password" value={inputs.password || ""} onChange={handleChange} />
                 </Form.Group>
                 <Button variant="primary" type="submit" onClick={handleSubmit}>
-                    <b>Login</b>
+                    <b> Register</b>
                 </Button>
-                <p style={{ color: "red" }}>{error}</p>
             </div>
         </div>
     )
